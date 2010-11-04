@@ -1,2 +1,5 @@
 *.lock
 *.tmproj
+.bundle
+*.db
+
