@@ -49,5 +49,5 @@ end
 # stylesheets via sass
 get '/css/style.css' do
   response['Content-Type'] = 'text/css; charset=utf-8'
-  sass :style
+  scss :style
 end

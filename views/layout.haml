@@ -1,13 +1,21 @@
 !!! 5			-# HTML5 Doctype
 
 %head
-	%title Main Project Page
+	%title Remote Monitoring Demo
 	%link{:rel=>'stylesheet', :href=>'/css/style.css', :type => "text/css"}
 	
 %body
-	#header
-	#main
-		#sidebar
+	#container
+		#header
+			%h1 Innovation Wave - Remote Monitoring Demo
+		#leftnav
+			%h2 Installations
+			- @projects.each do |p|
+				%li
+					%a{:title => "View #{p.name}", :href => "/projects/#{p.id}"}= p.name
 		#content
 			= yield
-	#footer
+		#footer
+			Questions? Contact
+			%a{:title => "Email John", :href => "mailto:john.warwick@philips.com?Subject=Innovation%20Wave%20Question"}John Warwick
+		
