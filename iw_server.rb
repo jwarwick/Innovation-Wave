@@ -16,7 +16,22 @@ migration "create the projects table" do
   end
 end
 
+migration "create the log file table" do
+  database.create_table :logs do
+    primary_key :id
+    text        :entry
+    timestamp   :timestamp, :null => false
+    foreign_key :project_id
+  end
+end
+  
+
 class Projects < Sequel::Model
+  one_to_many :logs
+end
+
+class Logs < Sequel::Model
+  many_to_one :projects
 end
 
 # before filter to populate project list

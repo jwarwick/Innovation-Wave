@@ -1,16 +1,41 @@
+$title_font: "Georgia", "serif";
+$body_font: "Lucida Grande", "Verdana", "Arial", "Helvetica", "sans-serif";
+$code_font_family: "Monaco", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", "monospace";
+$code_font_size: 14px;
+$code_font: $code_font_size $code_font_family;
+
+$light_link: #369;
+$link: $light_link - 40;
+$light_text: #666;
+$dark_blue_text: #0E3062;
+$light_background: #eee;
+
 #container {
 	width: 90%;
 	margin: 10px auto;
 	background-color: #fff;
-	color: #333;
-	border: 1px solid gray;
+	color: $light_text;
+	border: 1px solid silver;
 	line-height: 130%;
+	font-family: $body_font;
+	font-size: 90%;
+
+	h2 {
+		color: $dark_blue_text;
+	}
+
+	a {
+		color: $light_link;
+	}	
+
 }
 
 #header {
+	color: black;
 	padding: .5em;
-	background-color: #ddd;
+	background-color: $light_background;
 	border-bottom: 1px solid gray;
+	font-family: $title_font;
 
 	h1 {
 		padding: 0;
@@ -35,7 +60,7 @@
 
 #content {
 	margin-left: 200px;
-	border-left: 1px solid gray;
+	border-left: 1px solid silver;
 	padding: 1em;
 	max-width: 36em;
 	
@@ -49,7 +74,10 @@
 	margin: 0;
 	padding: .5em;
 	color: #333;
-	background-color: #ddd;
-	border-top: 1px solid gray;
+	background-color: $light_background; //#ddd;
+	border-top: 1px solid silver;
+	text-align: center;
+	font-variant: small-caps;
+	font-size: 95%;
 }
 
