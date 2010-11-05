@@ -1,11 +1,1 @@
-!!! 5			-# HTML5 Doctype
-
-%head
-	%title= "Project: #{@proj.name}"
-	
-%body
-	%h1= @proj.name
-	/ %ul
-	/ 	- @projects.each do |p|
-	/ 		%li
-	/ 			%a{:title => p.name, :href => "/projects/#{p.id}"}= p.name
+%h1= @proj.name

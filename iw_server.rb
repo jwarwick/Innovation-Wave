@@ -19,12 +19,14 @@ end
 class Projects < Sequel::Model
 end
 
+# before filter to populate project list
+before do
+    @projects = Projects.all
+end
+
+# routes
+
 get '/' do
-  # Projects.insert(:name => 'proj 2')
-  # Projects[1].name
-  # projStr = "Project count: #{Projects.count}\n"
-  # Projects.each{ |p| projStr << "\t#{p.id} #{p.name}"}
-  @projects = Projects.all
   haml :index
 end
 
@@ -44,3 +46,8 @@ post '/projects/?' do
   [201, data['name']]
 end
 
+# stylesheets via sass
+get '/css/style.css' do
+  response['Content-Type'] = 'text/css; charset=utf-8'
+  sass :style
+end
