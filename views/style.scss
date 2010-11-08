@@ -34,7 +34,7 @@ $light_background: #eee;
 	color: black;
 	padding: .5em;
 	background-color: $light_background;
-	border-bottom: 1px solid gray;
+	border-bottom: 1px solid silver;
 	font-family: $title_font;
 
 	h1 {
@@ -74,10 +74,16 @@ $light_background: #eee;
 	margin: 0;
 	padding: .5em;
 	color: #333;
-	background-color: $light_background; //#ddd;
+	background-color: $light_background;
 	border-top: 1px solid silver;
 	text-align: center;
 	font-variant: small-caps;
 	font-size: 95%;
 }
+
+.timestamp {
+	color: $light_link;
+	
+}
+
 

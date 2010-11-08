@@ -26,17 +26,17 @@ migration "create the log file table" do
 end
   
 
-class Projects < Sequel::Model
+class Project < Sequel::Model
   one_to_many :logs
 end
 
-class Logs < Sequel::Model
-  many_to_one :projects
+class Log < Sequel::Model
+  many_to_one :project
 end
 
 # before filter to populate project list
 before do
-    @projects = Projects.all
+    @projects = Project.all if request.get?
 end
 
 # routes
@@ -46,19 +46,38 @@ get '/' do
 end
 
 get '/projects/:id/?' do
-  @proj = Projects[params[:id]]
+  @proj = Project[params[:id]]
   halt [404, "No such project"] if @proj.nil?
+  
+  @logs = @proj.logs
   
   haml :project
 end
 
+# {name: 'my project'}
 post '/projects/?' do
   request.body.rewind  # in case someone already read it
   data = JSON.parse request.body.read
   halt [400, "No or empty name field"] if data['name'].nil? || data['name'].empty?
 
-  Projects.create(:name => data['name'])
+  Project.create(:name => data['name'])
   [201, data['name']]
+end
+
+# {message: 'my log message'}
+post '/projects/:id/logs/?' do
+  request.body.rewind  # in case someone already read it
+  data = JSON.parse request.body.read
+  halt [400, "No or empty message field"] if data['message'].nil? || data['message'].empty?
+
+  # find the project
+  @proj = Project[params[:id]]
+  halt [404, "No such project"] if @proj.nil?
+  
+  log = Log.create(:entry => data['message'], :timestamp => Time.now)
+  @proj.add_log(log)
+
+  [201, data['message']]
 end
 
 # stylesheets via sass
