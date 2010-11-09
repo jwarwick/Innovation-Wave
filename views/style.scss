@@ -9,6 +9,8 @@ $link: $light_link - 40;
 $light_text: #666;
 $dark_blue_text: #0E3062;
 $light_background: #eee;
+$timestamp_color: $light_link;
+$timestamp_font_size: 75%;
 
 #container {
 	width: 90%;
@@ -82,8 +84,8 @@ $light_background: #eee;
 }
 
 .timestamp {
-	color: $light_link;
-	
+	color: $timestamp_color;
+	font-size: $timestamp_font_size;
 }
 
 

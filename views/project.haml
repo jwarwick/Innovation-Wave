@@ -1,7 +1,10 @@
 %h1= @proj.name
 %h2 Log Messages
-%ul
-	- @logs.each do |l|
-		%li 
-			%span.timestamp= l.timestamp.httpdate
-			%span.logmessage= l.entry
+.logContainer
+	%ul
+		- @logs.each do |l|
+			%li
+				.logEntry
+					%span.timestamp= l.timestamp.httpdate
+					%span.logmessage= l.entry
+					

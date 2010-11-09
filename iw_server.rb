@@ -42,6 +42,8 @@ end
 # routes
 
 get '/' do
+  @logs = Log.limit(5)
+  
   haml :index
 end
 

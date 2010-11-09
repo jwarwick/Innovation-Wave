@@ -1,6 +1,9 @@
-%h2 The project list
-%ul
-	- @projects.each do |p|
-		%li
-			%a{:title => p.name, :href => "/projects/#{p.id}"}= p.name
-			
+%h2 Latest Project Messages
+.logContainer
+	%ul
+		- @logs.each do |l|
+			%li
+				.logEntry
+					%a.projectlink{:title => l.project.name, :href => "/projects/#{l.project.id}"}= l.project.name
+					%span.logmessage= l.entry
+					%span.timestamp= l.timestamp.httpdate
