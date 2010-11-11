@@ -16,9 +16,10 @@
 			%h2
 				%a{:title => 'Main Page', :href => '/'} Home
 			%h2 Installations
-			- @projects.each do |p|
-				%li
-					%a{:title => "View #{p.name}", :href => "/projects/#{p.id}"}= p.name
+			%ul
+				- @projects.each do |p|
+					%li
+						%a{:title => "View #{p.name}", :href => "/projects/#{p.id}"}= p.name
 		#content
 			= yield
 		%footer
