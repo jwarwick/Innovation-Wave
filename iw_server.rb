@@ -15,6 +15,7 @@ Pusher.secret = '5f5a1e9877c01dbe6df7'
 
 # required to keep RVM happy about where the haml views are located
 set :views, File.dirname(__FILE__) + '/views'
+set :public, File.dirname(__FILE__) + '/public'
 
 migration "create the projects table" do
   database.create_table :projects do
