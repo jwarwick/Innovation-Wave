@@ -2,8 +2,8 @@ require 'rest_client'
 require 'json'
 
 
-#@host = "http://innovationwave.heroku.com"
-@host = "http://127.0.0.1:4567"
+@host = "http://innovationwave.heroku.com"
+# @host = "http://127.0.0.1:4567"
 
 begin
     # response = RestClient.post "#{@host}/projects", { 'name' => 'Innovation Demo' }.to_json, :content_type => :json, :accept => :json
