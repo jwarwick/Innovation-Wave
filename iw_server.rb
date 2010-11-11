@@ -25,12 +25,28 @@ migration "create the log file table" do
   end
 end
   
+migration "create the power supply table" do
+  database.create_table :supplies do
+    primary_key :id
+    text        :name
+    text        :ip
+    text        :sn
+    timestamp   :timestamp, :null => false
+    foreign_key :project_id
+  end
+end  
+  
 
 class Project < Sequel::Model
   one_to_many :logs
+  one_to_many :supplies
 end
 
 class Log < Sequel::Model
+  many_to_one :project
+end
+
+class Supply < Sequel::Model
   many_to_one :project
 end
 
@@ -52,6 +68,7 @@ get '/projects/:id/?' do
   halt [404, "No such project"] if @proj.nil?
   
   @logs = @proj.logs
+  @supplies = @proj.supplies
   
   haml :project
 end
@@ -66,7 +83,7 @@ post '/projects/?' do
   [201, data['name']]
 end
 
-# {message: 'my log message'}
+# {'message':'my log message'}
 post '/projects/:id/logs/?' do
   request.body.rewind  # in case someone already read it
   data = JSON.parse request.body.read
@@ -80,6 +97,31 @@ post '/projects/:id/logs/?' do
   @proj.add_log(log)
 
   [201, data['message']]
+end
+
+# {'sn':'1234', 'name':'bob', 'ip':'127.0.0.1'}
+post '/projects/:id/supplies/?' do
+  request.body.rewind  # in case someone already read it
+  data = JSON.parse request.body.read
+  halt [400, "No or empty serial number field"] if data['sn'].nil? || data['sn'].empty?
+
+  # find the project
+  @proj = Project[params[:id]]
+  halt [404, "No such project"] if @proj.nil?
+  
+  # find the supply
+  response = 200
+  supply = @proj.supplies_dataset.filter(:sn => data['sn']).first
+  if supply.nil? then
+    supply = Supply.create(:sn => data['sn'], :timestamp => Time.now) if @supply.nil?
+    @proj.add_supply(supply)
+    response = 201
+  end
+  
+  # update the entry with the latest info
+  supply.update(:timestamp => Time.now, :name => data['name'], :ip => data['ip'] )
+
+  [response, data['sn']]
 end
 
 # stylesheets via sass

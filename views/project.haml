@@ -8,3 +8,14 @@
 					%span.timestamp= l.timestamp.httpdate
 					%span.logmessage= l.entry
 					
+%h2 Power Supplies
+.supplyContainer
+	%ul
+		- @supplies.each do |s|
+			%li
+				.supplyEntry
+					%span.timestamp= s.timestamp.httpdate
+					%span.logmessage= s.name
+					%span.logmessage= s.ip
+					%span.logmessage= s.sn
+					
