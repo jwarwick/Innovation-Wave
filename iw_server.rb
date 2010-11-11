@@ -43,13 +43,15 @@ migration "create the power supply table" do
   end
 end  
   
+Sequel.extension(:pagination)
 
 class Project < Sequel::Model
   one_to_many :logs
   one_to_many :supplies
 end
 
-class Log < Sequel::Model
+class Log < Sequel::Model #DB.from(:plants).order(plantname)
+  # order :timestamp
   many_to_one :project
 end
 
@@ -65,7 +67,7 @@ end
 # routes
 
 get '/' do
-  @logs = Log.limit(5)
+  @logs = Log.order(:timestamp.desc).limit(5)
   
   haml :index
 end
@@ -74,8 +76,11 @@ get '/projects/:id/?' do
   @proj = Project[params[:id]]
   halt [404, "No such project"] if @proj.nil?
   
-  @logs = @proj.logs
-  @supplies = @proj.supplies
+  # @logs = @proj.logs_dataset.order(:timestamp.desc).paginate(1, 4)
+  # puts "page count: #{@logs.page_count}"
+  
+  @logs = @proj.logs_dataset.order(:timestamp.desc)
+  @supplies = @proj.supplies_dataset.order(:sn)
   
   haml :project
 end

@@ -11,7 +11,8 @@ $(document).ready(function()
 	var pusher = new Pusher('3fcce2741943f98bf5f6');
 	pusher.subscribe('update_channel');
 	pusher.bind('update', function(data) {
-		alert(data);
+		// alert(data);
+		location.reload();
 	});
 });
 
