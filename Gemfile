@@ -1,3 +1,5 @@
+source :gemcutter
+
 gem "sinatra"
 gem "sequel"
 gem "sinatra-sequel"
