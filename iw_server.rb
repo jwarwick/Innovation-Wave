@@ -2,9 +2,16 @@ require 'sinatra'
 require 'sinatra/sequel'
 require 'json'
 require 'haml'
+require 'pusher'
 
 set :database, ENV['DATABASE_URL'] || 'sqlite://my.db'
 set :haml, :format => :html5
+
+# Pusher notifications
+Pusher.app_id = '2773'
+Pusher.key = '3fcce2741943f98bf5f6'
+Pusher.secret = '5f5a1e9877c01dbe6df7'
+
 
 # required to keep RVM happy about where the haml views are located
 set :views, File.dirname(__FILE__) + '/views'
@@ -120,6 +127,9 @@ post '/projects/:id/supplies/?' do
   
   # update the entry with the latest info
   supply.update(:timestamp => Time.now, :name => data['name'], :ip => data['ip'] )
+
+  Pusher['update_channel'].trigger('update', {:some => 'data'})  
+  puts "Sent pusher update"
 
   [response, data['sn']]
 end

@@ -1,10 +1,19 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    crack (0.1.8)
     haml (3.0.23)
     json (1.4.6)
+    pusher (0.6.0)
+      crack
+      json
+      ruby-hmac
+      signature
     rack (1.2.1)
+    ruby-hmac (0.4.0)
     sequel (3.16.0)
+    signature (0.1.2)
+      ruby-hmac
     sinatra (1.1.0)
       rack (~> 1.1)
       tilt (~> 1.1)
@@ -20,6 +29,7 @@ PLATFORMS
 DEPENDENCIES
   haml
   json
+  pusher
   sequel
   sinatra
   sinatra-sequel

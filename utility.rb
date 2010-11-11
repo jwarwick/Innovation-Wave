@@ -2,7 +2,7 @@ require 'rest_client'
 require 'json'
 
 
-# @host = "http://innovationwave.heroku.com"
+#@host = "http://innovationwave.heroku.com"
 @host = "http://127.0.0.1:4567"
 
 begin
