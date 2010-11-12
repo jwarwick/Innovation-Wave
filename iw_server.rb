@@ -7,15 +7,17 @@ require 'pusher'
 set :database, ENV['DATABASE_URL'] || 'sqlite://my.db'
 set :haml, :format => :html5
 
+# required to keep RVM happy about where the haml views are located
+set :views, File.dirname(__FILE__) + '/views'
+set :public, File.dirname(__FILE__) + '/public'
+
 # Pusher notifications
 Pusher.app_id = '2773'
 Pusher.key = '3fcce2741943f98bf5f6'
 Pusher.secret = '5f5a1e9877c01dbe6df7'
 
-
-# required to keep RVM happy about where the haml views are located
-set :views, File.dirname(__FILE__) + '/views'
-set :public, File.dirname(__FILE__) + '/public'
+# Sequel ORM
+Sequel.extension(:pagination)
 
 migration "create the projects table" do
   database.create_table :projects do
@@ -44,8 +46,7 @@ migration "create the power supply table" do
   end
 end  
   
-Sequel.extension(:pagination)
-
+# Sequel models
 class Project < Sequel::Model
   one_to_many :logs
   one_to_many :supplies
@@ -72,6 +73,10 @@ get '/' do
   
   haml :index
 end
+
+# get '/logs/?' do
+#   @logs = Log.order(:timestamp.desc).limit(5)
+# end
 
 get '/projects/:id/?' do
   @proj = Project[params[:id]]
@@ -109,6 +114,11 @@ post '/projects/:id/logs/?' do
   log = Log.create(:entry => data['message'], :timestamp => Time.now)
   @proj.add_log(log)
 
+  h = Hash["projName" => @proj.name, "projURL" => "/projects/#{@proj.id}",
+    "message" => log.entry, "timestamp" => log.timestamp.httpdate]
+  Pusher['log_channel'].trigger('new', h.to_json)  
+  
+
   [201, data['message']]
 end
 
@@ -135,7 +145,6 @@ post '/projects/:id/supplies/?' do
   supply.update(:timestamp => Time.now, :name => data['name'], :ip => data['ip'] )
 
   Pusher['update_channel'].trigger('update', {:some => 'data'})  
-  puts "Sent pusher update"
 
   [response, data['sn']]
 end
