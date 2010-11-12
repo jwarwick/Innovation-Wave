@@ -69,7 +69,7 @@ end
 # routes
 
 get '/' do
-  @logs = Log.order(:timestamp.desc).limit(5)
+  @logs = Log.order(:timestamp.desc).limit(10)
   
   haml :index
 end
