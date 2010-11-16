@@ -190,13 +190,13 @@ post '/projects/:id/supplies/?' do
 end
 
 # {'nodes':50}
-put '/supplies/:sn' do
+put '/supplies/:sn/?' do
   request.body.rewind # in case someone already read it
   data = JSON.parse request.body.read
   halt [400, "No or empty nodes field"] if data['nodes'].nil? || data['nodes'].empty?
 
   # find the supply
-  @supply = Supply[params[:sn]]
+  @supply = Supply[:sn => params[:sn]]
   halt [404, "No such supply"] if @supply.nil?
   
   @supply.nodes = data['nodes']
