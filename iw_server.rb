@@ -46,6 +46,13 @@ migration "create the power supply table" do
     foreign_key :project_id
   end
 end  
+
+migration "add nodes column to supplies" do
+    database.add_column :supplies, :nodes, Integer 
+end
+
+          
+
   
 # Sequel models
 class Project < Sequel::Model
