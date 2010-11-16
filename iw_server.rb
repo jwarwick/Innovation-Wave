@@ -182,6 +182,10 @@ post '/projects/:id/supplies/?' do
   [response, data['sn']]
 end
 
+post '/supplies/:sn' do
+  
+end
+
 # stylesheets via sass
 get '/css/style.css' do
   response['Content-Type'] = 'text/css; charset=utf-8'
