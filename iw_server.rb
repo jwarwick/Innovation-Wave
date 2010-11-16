@@ -176,7 +176,7 @@ post '/projects/:id/supplies/?' do
   response = 200
   supply = @proj.supplies_dataset.filter(:sn => data['sn']).first
   if supply.nil? then
-    supply = Supply.create(:sn => data['sn'], :timestamp => Time.now) if @supply.nil?
+    supply = Supply.create(:sn => data['sn'], :timestamp => Time.now, :nodes => 0) if @supply.nil?
     @proj.add_supply(supply)
     response = 201
   end
@@ -189,8 +189,19 @@ post '/projects/:id/supplies/?' do
   [response, data['sn']]
 end
 
-post '/supplies/:sn' do
+# {'nodes':50}
+put '/supplies/:sn' do
+  request.body.rewind # in case someone already read it
+  data = JSON.parse request.body.read
+  halt [400, "No or empty nodes field"] if data['nodes'].nil? || data['nodes'].empty?
+
+  # find the supply
+  @supply = Supply[params[:sn]]
+  halt [404, "No such supply"] if @supply.nil?
   
+  @supply.nodes = data['nodes']
+  
+  [200, data['nodes']]
 end
 
 # stylesheets via sass
