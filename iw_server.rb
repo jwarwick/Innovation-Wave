@@ -162,6 +162,8 @@ post '/projects/:id/logs/?' do
   [201, data['message']]
 end
 
+# XXX - need delete for logs and power supplies per project
+
 # {'sn':'1234', 'name':'bob', 'ip':'127.0.0.1'}
 post '/projects/:id/supplies/?' do
   request.body.rewind  # in case someone already read it
