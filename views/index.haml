@@ -1,9 +1,10 @@
 %h2 Latest Installation Messages
 .logContainer
-	%ul
-		- @logs.each do |l|
-			%li
-				.logEntry
-					%a.projectlink{:title => l.project.name, :href => "/projects/#{l.project.id}"}= l.project.name
-					%span.logmessage= l.entry
-					%span.timestamp= l.timestamp.httpdate
+	.logMessages
+		%ul
+			- @logs.each do |l|
+				%li
+					.logEntry
+						%a.projectlink{:title => l.project.name, :href => "/projects/#{l.project.id}"}= l.project.name
+						%span.logmessage= l.entry
+						%span.timestamp= l.timestamp.httpdate

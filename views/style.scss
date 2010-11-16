@@ -18,6 +18,7 @@ $header_text_color: black;
 $footer_background: $light_background;
 $footer_text_color: #333;
 
+
 #container {
 	width: 90%;
 	margin: 10px auto;
@@ -26,10 +27,17 @@ $footer_text_color: #333;
 	border: 1px solid silver;
 	line-height: 130%;
 	font-family: $body_font;
-	font-size: 90%;
+	font-size: 100%;
+
+	h1 {
+		padding: 0;
+		margin: 0;
+		font-size: 200%;
+	}
 
 	h2 {
 		color: $dark_blue_text;
+		font-size: 150%;
 	}
 
 	a {
@@ -44,11 +52,6 @@ header {
 	background-color: $header_background;
 	border-bottom: 1px solid silver;
 	font-family: $title_font;
-
-	h1 {
-		padding: 0;
-		margin: 0;
-	}
 }
 
 #leftnav {
@@ -72,8 +75,16 @@ header {
 	padding: 1em;
 	max-width: 36em;
 	
+	a.disabled {
+		color: gray;
+	}
+	
 	h2 { 
-		margin: 0 0 .5em 0; 
+		margin: 1em 0 .5em 0; 
+	}
+	
+	.logControls {
+		padding: 1em;
 	}
 }
 

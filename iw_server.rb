@@ -18,6 +18,7 @@ Pusher.secret = '5f5a1e9877c01dbe6df7'
 
 # Sequel ORM
 Sequel.extension(:pagination)
+Sequel::Model.plugin :json_serializer
 
 migration "create the projects table" do
   database.create_table :projects do
@@ -52,7 +53,7 @@ class Project < Sequel::Model
   one_to_many :supplies
 end
 
-class Log < Sequel::Model #DB.from(:plants).order(plantname)
+class Log < Sequel::Model
   # order :timestamp
   many_to_one :project
 end
@@ -74,9 +75,51 @@ get '/' do
   haml :index
 end
 
-# get '/logs/?' do
-#   @logs = Log.order(:timestamp.desc).limit(5)
-# end
+get '/logs/?' do
+  pass if params.key?('page')
+
+  pages = Log.dataset.order(:timestamp.desc)
+  responseHash = {'log' => pages }
+  
+  response['Content-Type'] = 'application/json'
+  [200, responseHash.to_json]
+end
+
+get '/logs/?' do 
+  pageNumber = params['page'].to_i || 1
+  rows = params['rows'] || 10
+  rows = rows.to_i
+  
+  pages = Log.dataset.order(:timestamp.desc).paginate(pageNumber,rows)
+  
+  logArray = Array.new
+  pages.each do |p|
+    logArray.insert(-1, {"entry" => p.entry, "timestamp" => p.timestamp.httpdate, 
+      "project_name" => p.project.name, "project_id" => p.project.id})
+  end
+  
+  responseHash = {'current_page' => pages.current_page,
+    'prev_page' => pages.prev_page,
+    'next_page' => pages.next_page,
+    'page_count' => pages.page_count,
+    'page_size' => pages.page_size,
+    'logs' => logArray.to_json }
+  
+  response['Content-Type'] = 'application/json'
+  [200, responseHash.to_json]
+end
+
+
+
+# {name: 'my project'}
+post '/projects/?' do
+  request.body.rewind  # in case someone already read it
+  data = JSON.parse request.body.read
+  halt [400, "No or empty name field"] if data['name'].nil? || data['name'].empty?
+
+  Project.create(:name => data['name'])
+  [201, data['name']]
+end
 
 get '/projects/:id/?' do
   @proj = Project[params[:id]]
@@ -89,16 +132,6 @@ get '/projects/:id/?' do
   @supplies = @proj.supplies_dataset.order(:sn)
   
   haml :project
-end
-
-# {name: 'my project'}
-post '/projects/?' do
-  request.body.rewind  # in case someone already read it
-  data = JSON.parse request.body.read
-  halt [400, "No or empty name field"] if data['name'].nil? || data['name'].empty?
-
-  Project.create(:name => data['name'])
-  [201, data['name']]
 end
 
 # {'message':'my log message'}
