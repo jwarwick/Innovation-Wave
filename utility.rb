@@ -15,9 +15,12 @@ begin
   response = RestClient.post "#{@host}/projects/1/logs", { 'message' => 'test log message' }.to_json, :content_type => :json, :accept => :json
    
   # response = RestClient.post "#{@host}/projects/1/supplies", { 'sn' => '1234', 'name' => 'fake supply', 'ip' => '127.0.0.1' }.to_json, :content_type => :json, :accept => :json
-  # response = RestClient.post "#{@host}/projects/1/supplies", { 'sn' => '5678', 'name' => 'fake supply2', 'ip' => '127.0.0.2' }.to_json, :content_type => :json, :accept => :json
+  response = RestClient.post "#{@host}/projects/1/supplies", { 'sn' => '5678', 'name' => 'fake supply2', 'ip' => '127.0.0.2' }.to_json, :content_type => :json, :accept => :json
   
   # response = RestClient.put "#{@host}/supplies/1234", {'nodes' => '50' }.to_json, :content_type => :json, :accept => :json
+  response = RestClient.put "#{@host}/supplies/1234", {'nodes' => '16' }.to_json, :content_type => :json, :accept => :json
+
+  response = RestClient.put "#{@host}/supplies/5678", {'nodes' => '4' }.to_json, :content_type => :json, :accept => :json
 
   #response = RestClient.delete "#{@host}/projects/1/logs"
 

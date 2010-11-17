@@ -2,6 +2,10 @@
 
 %h2.headerTitle Alerts
 .alertContainer.rounded
+	- @alerts.each do |a|
+		.roundedLabel.ui-state-error
+			%span.ui-icon.ui-icon-alert.warningImage
+			%span.alertEntry.roundedLabel.ui-state-error= a
 
 %h2.headerTitle Power Supplies
 .supplyContainer.rounded

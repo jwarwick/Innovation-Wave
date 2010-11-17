@@ -51,6 +51,9 @@ migration "add nodes column to supplies" do
     database.add_column :supplies, :nodes, Integer 
 end
 
+migration "add max nodes column to supplies" do
+    database.add_column :supplies, :max_nodes, Integer 
+end
           
 
   
@@ -72,6 +75,19 @@ end
 # before filter to populate project list
 before do
     @projects = Project.all if request.get?
+end
+
+
+helpers do
+
+  def getAlerts(project)
+    alerts = []
+    project.supplies_dataset.filter{nodes < max_nodes}.each do |s|
+      alerts = alerts << "#{s.name} - expected #{s.max_nodes} nodes, only found #{s.nodes}"
+    end
+    alerts
+  end
+
 end
 
 # routes
@@ -137,6 +153,7 @@ get '/projects/:id/?' do
   
   @logs = @proj.logs_dataset.order(:timestamp.desc)
   @supplies = @proj.supplies_dataset.order(:sn)
+  @alerts = getAlerts(@proj)
   
   haml :project
 end
@@ -215,6 +232,23 @@ delete '/projects/:id/supplies/?' do
   [200, "Deleted #{supply_count} supply entries"]
 end
 
+get '/projects/:id/alerts' do
+  # find the project
+  @proj = Project[params[:id]]
+  halt [404, "No such project"] if @proj.nil?
+  
+  # alerts = []
+  # @proj.supplies_dataset.filter{nodes < max_nodes}.each do |s|
+  #   alerts = alerts << "#{s.name} - expected #{s.max_nodes} nodes, only found #{s.nodes}"
+  # end
+  
+  alertsHash = {"alerts" => getAlerts(@proj)}
+  
+  response['Content-Type'] = 'application/json'
+  [200, alertsHash.to_json]
+  
+end
+
 # {'nodes':50}
 put '/supplies/:sn/?' do
   request.body.rewind # in case someone already read it
@@ -226,6 +260,9 @@ put '/supplies/:sn/?' do
   halt [404, "No such supply"] if @supply.nil?
   
   @supply.update(:nodes => data['nodes'])
+  
+  max_nodes = @supply.max_nodes || 0
+  @supply.update(:max_nodes => data['nodes']) if data['nodes'].to_i > max_nodes
   
   [200, data['nodes']]
 end
