@@ -42,6 +42,11 @@ $footer_text_color: #333;
 	padding: 0px 0px 0px 7px;
 }
 
+.projectlink {
+	float: left;
+	width: 125px;
+}
+
 #container {
 	width: 90%;
 	margin: 10px auto;
@@ -107,6 +112,7 @@ header {
 
 #content {
 	margin-left: 200px;
+	margin-bottom: 30px;
 	border-left: 1px solid silver;
 	padding: 1em;
 	max-width: 50em;
@@ -119,19 +125,12 @@ header {
 		margin: 1em 0 .5em 0; 
 	}
 	
-/*	.logmessage {
-		padding-left: 10px;
-		padding-right: 10px;
-	}*/
 	
 	.logControls {
 		padding: 1em;
 	}
 	
-	.projectlink {
-		float: left;
-		width: 125px;
-	}
+
 }
 
 footer {
