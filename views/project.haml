@@ -16,11 +16,15 @@
 		- @supplies.each do |s|
 			%li
 				.supplyEntry
-					%span.timestamp= s.timestamp.httpdate
-					%span.logmessage= s.name
+					%span.supplyName= s.name
+					%span.timestamp IP Address
 					%span.logmessage= s.ip
-					%span.logmessage= s.sn
+					%span.timestamp Serial Number
+					- snStr = "0x%08x" % s.sn.to_i
+					%span.logmessage= snStr
+					%span.timestamp Node Count
 					%span.logmessage= s.nodes
+
 %button#supplyDeleteButton.deleteButton{"data-project-id" => @proj.id} Clear
 
 

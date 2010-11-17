@@ -72,6 +72,13 @@ $footer_text_color: #333;
 		float: right;
 		margin: 3px auto;
 	}
+	
+	.supplyName {
+		font-size: 110%;
+		color: black;
+		margin-right: 10px;
+/*		width: 50%;*/
+	}
 }
 
 
@@ -102,7 +109,7 @@ header {
 	margin-left: 200px;
 	border-left: 1px solid silver;
 	padding: 1em;
-	max-width: 36em;
+	max-width: 50em;
 	
 	a.disabled {
 		color: gray;
