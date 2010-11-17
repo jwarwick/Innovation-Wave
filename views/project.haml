@@ -35,7 +35,7 @@
 		- @logs.each do |l|
 			%li
 				.logEntry
-					%span.timestamp= l.timestamp.httpdate
+					%span.projectLogTimestamp= l.timestamp.httpdate
 					%span.logmessage= l.entry
 %button#logDeleteButton.deleteButton{"data-project-id" => @proj.id} Clear
 	

@@ -7,4 +7,4 @@
 					.logEntry
 						%a.projectlink{:title => l.project.name, :href => "/projects/#{l.project.id}"}= l.project.name
 						%span.logmessage= l.entry
-						%span.timestamp= l.timestamp.httpdate
+						%span.mainLogTimestamp= l.timestamp.httpdate

@@ -149,9 +149,23 @@ footer {
 	font-size: 95%;
 }
 
-.timestamp {
+@mixin timestampDefaults {
 	color: $timestamp_color;
-	font-size: $timestamp_font_size;
+	font-size: $timestamp_font_size;	
+}
+
+.timestamp {
+	@include timestampDefaults;
+}
+
+.mainLogTimestamp {
+	@include timestampDefaults;
+	margin-left: 20px;
+}
+
+.projectLogTimestamp {
+	@include timestampDefaults;
+	margin-right: 15px;
 }
 
 
