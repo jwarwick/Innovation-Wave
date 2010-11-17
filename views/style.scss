@@ -18,6 +18,13 @@ $header_text_color: black;
 $footer_background: $light_background;
 $footer_text_color: #333;
 
+.rounded {
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border: 1px solid gray;
+	padding: 5px;
+}
 
 #container {
 	width: 90%;
@@ -44,7 +51,13 @@ $footer_text_color: #333;
 		color: $light_link;
 	}	
 
+	.deleteButton {
+		font-size: 90%;
+		float: right;
+		margin: 3px auto;
+	}
 }
+
 
 header {
 	color: $header_text_color;

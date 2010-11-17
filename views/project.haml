@@ -1,15 +1,10 @@
 %h1= @proj.name
-%h2 Log Messages
-.projectLogContainer
-	%ul
-		- @logs.each do |l|
-			%li
-				.logEntry
-					%span.timestamp= l.timestamp.httpdate
-					%span.logmessage= l.entry
-					
-%h2 Power Supplies
-.supplyContainer
+
+%h2.headerTitle Alerts
+.alertContainer.rounded
+
+%h2.headerTitle Power Supplies
+.supplyContainer.rounded
 	%ul
 		- @supplies.each do |s|
 			%li
@@ -18,5 +13,20 @@
 					%span.logmessage= s.name
 					%span.logmessage= s.ip
 					%span.logmessage= s.sn
-					%span.logmessage "#{s.nodes} nodes"
+					%span.logmessage= s.nodes
+%button#supplyDeleteButton.deleteButton{"data-project-id" => @proj.id} Clear
+
+
+%h2.headerTitle Log Messages
+.projectLogContainer.rounded
+	%ul
+		- @logs.each do |l|
+			%li
+				.logEntry
+					%span.timestamp= l.timestamp.httpdate
+					%span.logmessage= l.entry
+%button#logDeleteButton.deleteButton{"data-project-id" => @proj.id} Clear
+	
+					
+
 					

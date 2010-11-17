@@ -21,6 +21,37 @@ $(document).ready(function()
 	});
 	
 	// loadLogMessages(1, 10);
+	
+	$("#logDeleteButton").button().click(function(e) 
+	{
+		e.preventDefault();
+		var projID = $(this).attr("data-project-id");
+		
+		$.ajax({
+			type: "DELETE",
+			url: "/projects/" + projID + "/logs",
+			success: function(msg){
+				location.reload();
+				}
+			});
+			
+	});
+	
+	$("#supplyDeleteButton").button().click(function(e) 
+	{
+		e.preventDefault();
+		var projID = $(this).attr("data-project-id");
+		
+		$.ajax({
+			type: "DELETE",
+			url: "/projects/" + projID + "/supplies",
+			success: function(msg){
+				location.reload();
+				}
+			});
+
+	});
+	
 });
 
 function addNewLogMessage(data)
@@ -29,7 +60,7 @@ function addNewLogMessage(data)
 	$(".logContainer ul").prepend("<li><div class='logEntry'><a href='" + data.projURL +
 		"' class='projectlink' title='" + data.projName + "'>" + data.projName + 
 		"</a><span class='logmessage'>" + data.message + "</span><span class='timestamp'>" + data.timestamp + "</span></div></li>");
-	// $(".logContainer ul li:first").hide().show('highlight', {}, 20000);
+	$(".logContainer ul li:first").hide().show('highlight', {}, 20000);
 }
 
 function loadLogMessages(page, rows)

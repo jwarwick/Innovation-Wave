@@ -162,7 +162,18 @@ post '/projects/:id/logs/?' do
   [201, data['message']]
 end
 
-# XXX - need delete for logs and power supplies per project
+delete '/projects/:id/logs/?' do
+  # find the project
+  @proj = Project[params[:id]]
+  halt [404, "No such project"] if @proj.nil?
+  
+  log_dataset = @proj.logs_dataset
+  log_count = log_dataset.count
+  
+  log_dataset.destroy
+  
+  [200, "Deleted #{log_count} log entries"]
+end
 
 # {'sn':'1234', 'name':'bob', 'ip':'127.0.0.1'}
 post '/projects/:id/supplies/?' do
@@ -191,6 +202,19 @@ post '/projects/:id/supplies/?' do
   [response, data['sn']]
 end
 
+delete '/projects/:id/supplies/?' do
+  # find the project
+  @proj = Project[params[:id]]
+  halt [404, "No such project"] if @proj.nil?
+  
+  supply_dataset = @proj.supplies_dataset
+  supply_count = supply_dataset.count
+  
+  supply_dataset.destroy
+  
+  [200, "Deleted #{supply_count} supply entries"]
+end
+
 # {'nodes':50}
 put '/supplies/:sn/?' do
   request.body.rewind # in case someone already read it
@@ -201,7 +225,7 @@ put '/supplies/:sn/?' do
   @supply = Supply[:sn => params[:sn]]
   halt [404, "No such supply"] if @supply.nil?
   
-  @supply.nodes = data['nodes']
+  @supply.update(:nodes => data['nodes'])
   
   [200, data['nodes']]
 end
