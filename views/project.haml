@@ -10,22 +10,23 @@
 				%span.ui-icon.ui-icon-alert.warningImage
 				%span.alertEntry.roundedLabel.ui-state-error= a
 
-%h2.headerTitle Power Supplies
-.supplyContainer.rounded
-	%ul
-		- @supplies.each do |s|
-			%li
-				.supplyEntry
-					%span.supplyName= s.name
-					%span.timestamp IP Address
-					%span.logmessage= s.ip
-					%span.timestamp Serial Number
-					- snStr = "0x%08x" % s.sn.to_i
-					%span.logmessage= snStr
-					%span.timestamp Node Count
-					%span.logmessage= s.nodes
+.supplyArea
+	%h2.headerTitle Power Supplies
+	.supplyContainer.rounded
+		%ul
+			- @supplies.each do |s|
+				%li
+					.supplyEntry
+						%span.supplyName= s.name
+						%span.timestamp IP Address
+						%span.logmessage= s.ip
+						%span.timestamp Serial Number
+						- snStr = "0x%08x" % s.sn.to_i
+						%span.logmessage= snStr
+						%span.timestamp Node Count
+						%span.logmessage= s.nodes
 
-%button#supplyDeleteButton.deleteButton{"data-project-id" => @proj.id} Clear
+	%button#supplyDeleteButton.deleteButton{"data-project-id" => @proj.id} Clear
 
 
 %h2.headerTitle Log Messages
