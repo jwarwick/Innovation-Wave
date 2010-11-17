@@ -175,6 +175,7 @@ post '/projects/:id/logs/?' do
     "message" => log.entry, "timestamp" => log.timestamp.httpdate]
   Pusher['log_channel'].trigger('new', h.to_json)  
   
+  Pusher["project_log_channel_#{@proj.id}"].trigger('new', h.to_json)
 
   [201, data['message']]
 end

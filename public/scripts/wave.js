@@ -8,16 +8,32 @@ $(document).ready(function()
 	// // Flash fallback logging - don't include this in production
 	// WEB_SOCKET_DEBUG = true;
 
+
+
 	var pusher = new Pusher('3fcce2741943f98bf5f6');
-	var updateChannel = pusher.subscribe('update_channel');
-	updateChannel.bind('update', function(data) {
-		// location.reload();
-	});
+
+	var projID = $("body").attr("data-project-id");
+	if (projID) {
+		// Project page
+		var projLogChannel = pusher.subscribe('project_log_channel_' + projID);
+		projLogChannel.bind('new', function(data) {
+			addNewProjectLogMessage(data);
+		});
+
+	}
+	else
+	{
+		// Main Index page
+		var updateChannel = pusher.subscribe('update_channel');
+		updateChannel.bind('update', function(data) {
+			// location.reload();
+		});
 	
-	var logChannel = pusher.subscribe('log_channel');
-	logChannel.bind('new', function(data) {
-		addNewLogMessage(data);
-	});
+		var logChannel = pusher.subscribe('log_channel');
+		logChannel.bind('new', function(data) {
+			addNewLogMessage(data);
+		});
+	}
 	
 	// loadLogMessages(1, 10);
 	
@@ -60,6 +76,18 @@ function addNewLogMessage(data)
 		"' class='projectlink' title='" + data.projName + "'>" + data.projName + 
 		"</a><span class='logmessage'>" + data.message + "</span><span class='timestamp'>" + data.timestamp + "</span></div></li>");
 	$(".logContainer ul li:first").hide().show('highlight', {}, 20000);
+}
+
+function addNewProjectLogMessage(data)
+{
+	// %li
+	// 	.logEntry
+	// 		%span.projectLogTimestamp= l.timestamp.httpdate
+	// 		%span.logmessage= l.entry
+	
+	// $(".logContainer ul li:last").remove();
+	$(".projectLogContainer ul").prepend("<li><div class='logEntry'><span class='projectLogTimestamp'>" + data.timestamp + "</span><span class='logmessage'>" + data.message + "</span></div></li>");
+	$(".projectLogContainer ul li:first").hide().show('highlight', {}, 20000);
 }
 
 function loadLogMessages(page, rows)
