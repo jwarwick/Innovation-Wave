@@ -1,14 +1,14 @@
 %h1= @proj.name
 
 %h2.headerTitle Alerts
-.alertContainer.rounded
-	- if @alerts.empty?
+- if @alerts.empty?
+	.alertContainer.rounded
 		.noAlertMessage No alerts
-	- else
-		- @alerts.each do |a|
-			.roundedLabel.ui-state-error
-				%span.ui-icon.ui-icon-alert.warningImage
-				%span.alertEntry.roundedLabel.ui-state-error= a
+- else
+	- @alerts.each do |a|
+		.ui-state-error.roundedLabel
+			%span.ui-icon.ui-icon-alert.warningImage
+			%span.alertEntry.ui-state-error= a
 
 .supplyArea
 	%h2.headerTitle Power Supplies
