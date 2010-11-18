@@ -20,7 +20,7 @@ begin
   # response = RestClient.put "#{@host}/supplies/1234", {'nodes' => '50' }.to_json, :content_type => :json, :accept => :json
   response = RestClient.put "#{@host}/supplies/1234", {'nodes' => '50' }.to_json, :content_type => :json, :accept => :json
 
-  response = RestClient.put "#{@host}/supplies/5678", {'nodes' => '50' }.to_json, :content_type => :json, :accept => :json
+  response = RestClient.put "#{@host}/supplies/5678", {'nodes' => '27' }.to_json, :content_type => :json, :accept => :json
 
   #response = RestClient.delete "#{@host}/projects/1/logs"
 

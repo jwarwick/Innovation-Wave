@@ -175,7 +175,7 @@ post '/projects/:id/logs/?' do
     "message" => log.entry, "timestamp" => log.timestamp.httpdate]
   Pusher['log_channel'].trigger('new', h.to_json)  
   
-  Pusher["project_log_channel_#{@proj.id}"].trigger('new', h.to_json)
+  Pusher["project_channel_#{@proj.id}"].trigger('log', h.to_json)
 
   [201, data['message']]
 end
@@ -237,12 +237,7 @@ get '/projects/:id/alerts' do
   # find the project
   @proj = Project[params[:id]]
   halt [404, "No such project"] if @proj.nil?
-  
-  # alerts = []
-  # @proj.supplies_dataset.filter{nodes < max_nodes}.each do |s|
-  #   alerts = alerts << "#{s.name} - expected #{s.max_nodes} nodes, only found #{s.nodes}"
-  # end
-  
+    
   alertsHash = {"alerts" => getAlerts(@proj)}
   
   response['Content-Type'] = 'application/json'
@@ -260,6 +255,7 @@ put '/supplies/:sn/?' do
   @supply = Supply[:sn => params[:sn]]
   halt [404, "No such supply"] if @supply.nil?
   
+  Pusher["project_channel_#{@supply.project.id}"].trigger('alert', {})  
   @supply.update(:nodes => data['nodes'])
   
   max_nodes = @supply.max_nodes || 0

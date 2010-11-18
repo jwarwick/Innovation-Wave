@@ -15,9 +15,13 @@ $(document).ready(function()
 	var projID = $("body").attr("data-project-id");
 	if (projID) {
 		// Project page
-		var projLogChannel = pusher.subscribe('project_log_channel_' + projID);
-		projLogChannel.bind('new', function(data) {
+		var projChannel = pusher.subscribe('project_channel_' + projID);
+		projChannel.bind('log', function(data) {
 			addNewProjectLogMessage(data);
+		});
+
+		projChannel.bind('alert', function() {
+			$.getJSON("/projects/" + projID + "/alerts", function(data) {updateAlerts(data)});
 		});
 
 	}
@@ -75,7 +79,7 @@ function addNewLogMessage(data)
 	$(".logContainer ul").prepend("<li><div class='logEntry'><a href='" + data.projURL +
 		"' class='projectlink' title='" + data.projName + "'>" + data.projName + 
 		"</a><span class='logmessage'>" + data.message + "</span><span class='timestamp'>" + data.timestamp + "</span></div></li>");
-	$(".logContainer ul li:first").hide().show('highlight', {}, 20000);
+	$(".logContainer ul li:first").hide().show('highlight', {}, 30000);
 }
 
 function addNewProjectLogMessage(data)
@@ -87,7 +91,7 @@ function addNewProjectLogMessage(data)
 	
 	// $(".logContainer ul li:last").remove();
 	$(".projectLogContainer ul").prepend("<li><div class='logEntry'><span class='projectLogTimestamp'>" + data.timestamp + "</span><span class='logmessage'>" + data.message + "</span></div></li>");
-	$(".projectLogContainer ul li:first").hide().show('highlight', {}, 20000);
+	$(".projectLogContainer ul li:first").hide().show('highlight', {}, 30000);
 }
 
 function loadLogMessages(page, rows)
@@ -165,4 +169,39 @@ function addLogControls()
 {	
 	var frag = "<div class='logControls'><span class='prevButton'><a href='#' class='prevLink'>Prev</a></span><span class='currentPage'>Page ?</span><span class='nextButton'><a href='#' class='nextLink'>Next</a></span></div>";
 	$(".logMessages").append(frag);
+}
+
+function updateAlerts(data)
+{
+	// .alertDiv
+	// 	.alertWrapper	
+	// 	- if @alerts.empty?
+	// 	.alertContainer.rounded
+	// 		.noAlertMessage No alerts
+	// - else
+	// 	- @alerts.each do |a|
+	// 		.ui-state-error.roundedLabel
+	// 			%span.ui-icon.ui-icon-alert.warningImage
+	// 			%span.alertEntry.ui-state-error= a
+	
+	$(".alertWrapper").remove();
+	
+	var alerts = data.alerts;
+	if (0 == alerts.length)
+	{
+		var frag = "<div class='alertWrapper'><div class='alertContainer rounded'><div clss='noAlertMessage'>No alerts</div></div></div>";
+		$(".alertDiv").append(frag);
+	}
+	else
+	{
+		var frag = 	"<div class='alertWrapper'>";
+		$.each(alerts, function(index, value) {
+			frag += "<div class='ui-state-error roundedLabel'><span class='ui-icon ui-icon-alert warningImage'></span><span class='alertEntry ui-state-error'>";
+			frag += value;
+			frag += "</span></div>"
+		});
+		frag += "</div>";
+		$(".alertDiv").append(frag);
+	}
+
 }
