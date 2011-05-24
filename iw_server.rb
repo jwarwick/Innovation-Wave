@@ -14,7 +14,7 @@ set :public, File.dirname(__FILE__) + '/public'
 # Pusher notifications
 Pusher.app_id = '2773'
 Pusher.key = '3fcce2741943f98bf5f6'
-Pusher.secret = '5f5a1e9877c01dbe6df7'
+Pusher.secret = '5f5a1e9877c01dbe6df7' # in a real application this would live in an ENV var, not the source
 
 # Sequel ORM
 Sequel.extension(:pagination)
